@@ -160,6 +160,13 @@
         background: #ccc;
         border-radius: 4px;
       }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
     </style>
   </head>
 
@@ -387,22 +394,12 @@
         </div>
 
         <!-- ตัวกรองประเภทรายการ (Filter Pills) -->
-        <div class="d-flex gap-1 overflow-x-auto pb-1 mb-2 no-scrollbar">
-          <button class="filter-btn active" onclick="setFilter('ALL', this)">
-            <i class="fa-solid fa-border-all me-1"></i>ทั้งหมด
-          </button>
-          <button class="filter-btn" onclick="setFilter('INTAKE', this)">
-            <i class="fa-solid fa-arrow-down me-1 text-success"></i>รับเข้า (+)
-          </button>
-          <button class="filter-btn" onclick="setFilter('OUTTAKE', this)">
-            <i class="fa-solid fa-arrow-up me-1 text-danger"></i>เบิกจ่าย (-)
-          </button>
-          <button class="filter-btn" onclick="setFilter('DIESEL', this)">
-            <i class="fa-solid fa-oil-can me-1 text-success"></i>ดีเซล
-          </button>
-          <button class="filter-btn" onclick="setFilter('BENZENE', this)">
-            <i class="fa-solid fa-gas-pump me-1 text-warning"></i>เบนซิน
-          </button>
+        <div class="d-flex flex-nowrap gap-2 overflow-x-auto pb-2 mb-2 no-scrollbar" style="white-space: nowrap; -webkit-overflow-scrolling: touch;">
+          <button class="filter-btn flex-shrink-0 active" onclick="setFilter('ALL', this)"><i class="fa-solid fa-border-all me-1"></i>ทั้งหมด</button>
+          <button class="filter-btn flex-shrink-0" onclick="setFilter('INTAKE', this)"><i class="fa-solid fa-arrow-down me-1 text-success"></i>รับเข้า (+)</button>
+          <button class="filter-btn flex-shrink-0" onclick="setFilter('OUTTAKE', this)"><i class="fa-solid fa-arrow-up me-1 text-danger"></i>เบิกจ่าย (-)</button>
+          <button class="filter-btn flex-shrink-0" onclick="setFilter('DIESEL', this)"><i class="fa-solid fa-oil-can me-1 text-success"></i>ดีเซล</button>
+          <button class="filter-btn flex-shrink-0" onclick="setFilter('BENZENE', this)"><i class="fa-solid fa-gas-pump me-1 text-warning"></i>เบนซิน</button>
         </div>
 
         <!-- ช่องค้นหา -->
