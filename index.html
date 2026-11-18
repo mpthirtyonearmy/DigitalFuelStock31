@@ -1,425 +1,686 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ระบบคลังน้ำมัน สป.3 - กองพันทหารสารวัตรที่ 31</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบคลังน้ำมัน สป.3 - กองพันทหารสารวัตรที่ 31</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts: Sarabun & Kanit -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- SweetAlert2 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- FontAwesome Icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-  <!-- Google Fonts: Sarabun & Kanit -->
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- SweetAlert2 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+      :root {
+        --army-primary: #2d4a22;
+        --army-dark: #1c2e15;
+        --army-accent: #d4af37;
+        --army-light-bg: #f4f6f3;
+        --ktb-green: #2e7d32;
+        --ktb-red: #c62828;
+        --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      }
 
-  <style>
-    :root {
-      --army-primary: #2D4A22;
-      --army-dark: #1C2E15;
-      --army-accent: #D4AF37;
-      --army-light-bg: #F4F6F3;
-      --ktb-green: #2E7D32;
-      --ktb-red: #C62828;
-      --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-    }
+      body {
+        font-family: "Sarabun", sans-serif;
+        background-color: var(--army-light-bg);
+        color: #333;
+        padding-bottom: 30px;
+      }
 
-    body {
-      font-family: 'Sarabun', sans-serif;
-      background-color: var(--army-light-bg);
-      color: #333;
-      padding-bottom: 30px;
-    }
+      h1,
+      h2,
+      h3,
+      h4,
+      .font-heading {
+        font-family: "Kanit", sans-serif;
+      }
 
-    h1, h2, h3, h4, .font-heading {
-      font-family: 'Kanit', sans-serif;
-    }
+      .army-header {
+        background: linear-gradient(
+          135deg,
+          var(--army-dark) 0%,
+          var(--army-primary) 100%
+        );
+        color: #fff;
+        padding: 18px 15px 25px 15px;
+        border-bottom: 4px solid var(--army-accent);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
 
-    .army-header {
-      background: linear-gradient(135deg, var(--army-dark) 0%, var(--army-primary) 100%);
-      color: #fff;
-      padding: 18px 15px 25px 15px;
-      border-bottom: 4px solid var(--army-accent);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
+      .unit-badge {
+        background: rgba(212, 175, 55, 0.2);
+        border: 1px solid var(--army-accent);
+        color: var(--army-accent);
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
 
-    .unit-badge {
-      background: rgba(212, 175, 55, 0.2);
-      border: 1px solid var(--army-accent);
-      color: var(--army-accent);
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
+      .stock-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: var(--card-shadow);
+        background: #ffffff;
+        transition: transform 0.2s;
+      }
 
-    .stock-card {
-      border: none;
-      border-radius: 16px;
-      box-shadow: var(--card-shadow);
-      background: #ffffff;
-      transition: transform 0.2s;
-    }
+      .stock-card:hover {
+        transform: translateY(-2px);
+      }
 
-    .stock-card:hover {
-      transform: translateY(-2px);
-    }
+      .filter-btn {
+        border-radius: 20px;
+        font-size: 0.82rem;
+        padding: 5px 14px;
+        font-weight: 500;
+        border: 1px solid #dcdcdc;
+        background: #f8f9fa;
+        color: #555;
+        transition: all 0.2s;
+      }
 
-    .stock-val {
-      font-size: 1.8rem;
-      font-weight: 700;
-      font-family: 'Kanit', sans-serif;
-    }
+      .filter-btn.active {
+        background: var(--army-primary);
+        color: #fff;
+        border-color: var(--army-primary);
+        box-shadow: 0 3px 8px rgba(45, 74, 34, 0.3);
+      }
 
-    .filter-btn {
-      border-radius: 25px;
-      font-size: 0.85rem;
-      padding: 6px 16px;
-      font-weight: 500;
-      border: 1px solid #ddd;
-      background: #fff;
-      color: #555;
-      transition: all 0.2s;
-    }
+      .ktb-list-container {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+      }
 
-    .filter-btn.active {
-      background: var(--army-primary);
-      color: #fff;
-      border-color: var(--army-primary);
-      box-shadow: 0 3px 8px rgba(45, 74, 34, 0.3);
-    }
+      .ktb-item {
+        display: flex;
+        align-items: center;
+        padding: 14px 16px;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
 
-    .ktb-list-container {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: var(--card-shadow);
-      overflow: hidden;
-    }
+      .ktb-item:last-child {
+        border-bottom: none;
+      }
 
-    .ktb-item {
-      display: flex;
-      align-items: center;
-      padding: 14px 16px;
-      border-bottom: 1px solid #f0f0f0;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
+      .ktb-item:hover {
+        background-color: #f9fbf8;
+      }
 
-    .ktb-item:last-child {
-      border-bottom: none;
-    }
+      .amount-text {
+        font-family: "Kanit", sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-align: right;
+      }
 
-    .ktb-item:hover {
-      background-color: #f9fbf8;
-    }
+      .amount-text.intake {
+        color: var(--ktb-green);
+      }
+      .amount-text.outtake {
+        color: var(--ktb-red);
+      }
 
-    .amount-text {
-      font-family: 'Kanit', sans-serif;
-      font-weight: 600;
-      font-size: 1.1rem;
-      text-align: right;
-    }
+      .date-badge {
+        background: #eef2eb;
+        color: var(--army-primary);
+        padding: 4px 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-left: 3px solid var(--army-primary);
+        margin-top: 15px;
+        margin-bottom: 5px;
+      }
 
-    .amount-text.intake { color: var(--ktb-green); }
-    .amount-text.outtake { color: var(--ktb-red); }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
 
-    .date-badge {
-      background: #eef2eb;
-      color: var(--army-primary);
-      padding: 4px 12px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border-left: 3px solid var(--army-primary);
-      margin-top: 15px;
-      margin-bottom: 5px;
-    }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-  </style>
-</head>
-
-<body>
-
-  <!-- Header ธีมทหาร -->
-  <div class="army-header text-center">
-    <div class="container max-width-md">
-      <div class="d-flex align-items-center justify-content-between mb-2">
-        <span class="unit-badge"><i class="fa-solid fa-shield-halved me-1"></i> กองพันทหารสารวัตรที่ 31</span>
-        <button class="btn btn-sm btn-outline-light rounded-circle" onclick="loadData()" title="รีเฟรชข้อมูล">
-          <i class="fa-solid fa-rotate-right"></i>
-        </button>
+  <body>
+    <!-- Header ธีมทหาร -->
+    <div class="army-header text-center">
+      <div class="container max-width-md">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="unit-badge"
+            ><i class="fa-solid fa-shield-halved me-1"></i> กองพันทหารสารวัตรที่
+            31</span
+          >
+          <button
+            class="btn btn-sm btn-outline-light rounded-circle"
+            onclick="loadData()"
+            title="รีเฟรชข้อมูล"
+          >
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+        <h3 class="m-0 fw-bold">
+          <i class="fa-solid fa-gas-pump me-2"></i>ระบบติดตามคลัง สป.3
+        </h3>
+        <p class="text-white-50 small mb-0 mt-1">
+          รายงานสรุปยอดคงเหลือและประวัติการรับ-จ่ายน้ำมัน
+        </p>
       </div>
-      <h3 class="m-0 fw-bold"><i class="fa-solid fa-gas-pump me-2"></i>ระบบติดตามคลัง สป.3</h3>
-      <p class="text-white-50 small mb-0 mt-1">รายงานสรุปยอดคงเหลือและประวัติการรับ-จ่ายน้ำมัน</p>
     </div>
-  </div>
 
-  <div class="container my-3 max-width-md" style="max-width: 850px;">
-
-    <!-- Dashboard: ยอดคงเหลือในคลัง -->
-    <div class="row g-2 mb-3">
-      <div class="col-6">
-        <div class="stock-card p-3 border-start border-4 border-success">
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="text-muted small fw-bold">ดีเซลคงเหลือ</span>
-            <i class="fa-solid fa-oil-can text-success"></i>
+    <div class="container my-3 max-width-md" style="max-width: 850px">
+      <!-- 1. การ์ดแนวนอน 2 อัน (ดีเซล / เบนซิน) แบ่ง 3 คอลัมน์ (ค่าเปลี่ยนตาม Filter) -->
+      <div class="row g-2 mb-3">
+        <!-- การ์ดดีเซล -->
+        <div class="col-12">
+          <div
+            class="stock-card p-3 border-start border-4 border-success bg-white"
+          >
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-bold text-success"
+                ><i class="fa-solid fa-oil-can me-1"></i> ดีเซล</span
+              >
+              <span
+                class="badge bg-success bg-opacity-10 text-success"
+                style="font-size: 0.75rem"
+                >สป.3</span
+              >
+            </div>
+            <div class="row text-center g-1">
+              <div class="col-4 border-end">
+                <div class="text-muted" style="font-size: 0.75rem">คงเหลือ</div>
+                <div
+                  class="fw-bold text-success mt-1"
+                  style="
+                    font-size: 1.25rem;
+                    font-family: &quot;Kanit&quot;, sans-serif;
+                  "
+                  id="filteredDieselStock"
+                >
+                  0
+                </div>
+                <div class="text-muted" style="font-size: 0.65rem">ลิตร</div>
+              </div>
+              <div class="col-4 border-end">
+                <div class="text-success" style="font-size: 0.75rem">
+                  <i class="fa-solid fa-arrow-down-long"></i> ยอดรับ
+                </div>
+                <div
+                  class="fw-bold text-dark mt-1"
+                  style="
+                    font-size: 1.25rem;
+                    font-family: &quot;Kanit&quot;, sans-serif;
+                  "
+                  id="filteredDieselIntake"
+                >
+                  0
+                </div>
+                <div class="text-muted" style="font-size: 0.65rem">ลิตร</div>
+              </div>
+              <div class="col-4">
+                <div class="text-danger" style="font-size: 0.75rem">
+                  <i class="fa-solid fa-arrow-up-long"></i> ยอดเบิก
+                </div>
+                <div
+                  class="fw-bold text-dark mt-1"
+                  style="
+                    font-size: 1.25rem;
+                    font-family: &quot;Kanit&quot;, sans-serif;
+                  "
+                  id="filteredDieselOuttake"
+                >
+                  0
+                </div>
+                <div class="text-muted" style="font-size: 0.65rem">ลิตร</div>
+              </div>
+            </div>
           </div>
-          <div class="stock-val text-success mt-1" id="dieselStock">0</div>
-          <div class="text-muted" style="font-size: 0.75rem;">ลิตร</div>
         </div>
-      </div>
-      <div class="col-6">
-        <div class="stock-card p-3 border-start border-4 border-warning">
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="text-muted small fw-bold">เบนซินคงเหลือ</span>
-            <i class="fa-solid fa-gas-pump text-warning"></i>
+
+        <!-- การ์ดเบนซิน -->
+        <div class="col-12">
+          <div
+            class="stock-card p-3 border-start border-4 border-warning bg-white"
+          >
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-bold text-warning-emphasis"
+                ><i class="fa-solid fa-gas-pump me-1"></i> เบนซิน</span
+              >
+              <span
+                class="badge bg-warning bg-opacity-10 text-warning-emphasis"
+                style="font-size: 0.75rem"
+                >สป.3</span
+              >
+            </div>
+            <div class="row text-center g-1">
+              <div class="col-4 border-end">
+                <div class="text-muted" style="font-size: 0.75rem">คงเหลือ</div>
+                <div
+                  class="fw-bold text-warning mt-1"
+                  style="
+                    font-size: 1.25rem;
+                    font-family: &quot;Kanit&quot;, sans-serif;
+                  "
+                  id="filteredBenzeneStock"
+                >
+                  0
+                </div>
+                <div class="text-muted" style="font-size: 0.65rem">ลิตร</div>
+              </div>
+              <div class="col-4 border-end">
+                <div class="text-success" style="font-size: 0.75rem">
+                  <i class="fa-solid fa-arrow-down-long"></i> ยอดรับ
+                </div>
+                <div
+                  class="fw-bold text-dark mt-1"
+                  style="
+                    font-size: 1.25rem;
+                    font-family: &quot;Kanit&quot;, sans-serif;
+                  "
+                  id="filteredBenzeneIntake"
+                >
+                  0
+                </div>
+                <div class="text-muted" style="font-size: 0.65rem">ลิตร</div>
+              </div>
+              <div class="col-4">
+                <div class="text-danger" style="font-size: 0.75rem">
+                  <i class="fa-solid fa-arrow-up-long"></i> ยอดเบิก
+                </div>
+                <div
+                  class="fw-bold text-dark mt-1"
+                  style="
+                    font-size: 1.25rem;
+                    font-family: &quot;Kanit&quot;, sans-serif;
+                  "
+                  id="filteredBenzeneOuttake"
+                >
+                  0
+                </div>
+                <div class="text-muted" style="font-size: 0.65rem">ลิตร</div>
+              </div>
+            </div>
           </div>
-          <div class="stock-val text-warning mt-1" id="benzeneStock">0</div>
-          <div class="text-muted" style="font-size: 0.75rem;">ลิตร</div>
+        </div>
+      </div>
+
+      <!-- 2. Summary Box (ยอดรับรวม / ยอดเบิกจ่ายรวม) วางไว้ใต้การ์ดเบนซิน (ค่าเปลี่ยนตาม Filter) -->
+      <div class="stock-card p-3 mb-3 bg-white">
+        <div class="row text-center">
+          <div class="col-6 border-end">
+            <div class="text-success small fw-semibold">
+              <i class="fa-solid fa-arrow-down-long me-1"></i> ยอดรับรวมทั้งหมด
+            </div>
+            <div class="fw-bold mt-1 text-dark" id="filteredTotalIntakeSummary">
+              0 ลิตร
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-danger small fw-semibold">
+              <i class="fa-solid fa-arrow-up-long me-1"></i> ยอดเบิกจ่ายรวม
+            </div>
+            <div
+              class="fw-bold mt-1 text-dark"
+              id="filteredTotalOuttakeSummary"
+            >
+              0 ลิตร
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Redesigned Filter Section Card (รวมส่วนกรองและค้นหาให้อยู่ใน Card สวยงามมีมิติ) -->
+      <div
+        class="stock-card p-3 mb-3 bg-white border-start border-4 border-secondary"
+      >
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span
+            class="fw-bold text-secondary font-heading"
+            style="font-size: 0.95rem"
+          >
+            <i class="fa-solid fa-filter me-1 text-success"></i>
+            ตัวกรองและค้นหาข้อมูลประวัติ
+          </span>
+          <span
+            class="badge bg-light text-dark border px-2 py-1"
+            id="itemCountBadge"
+            style="font-size: 0.75rem"
+            >0 รายการ</span
+          >
+        </div>
+
+        <!-- Dropdown กรองเดือน พ.ศ. -->
+        <div class="mb-2">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light text-muted"
+              ><i class="fa-regular fa-calendar-days"></i
+            ></span>
+            <select
+              id="monthFilterSelect"
+              class="form-select form-select-sm bg-light"
+              onchange="filterAndRender()"
+            >
+              <option value="ALL">-- ทุกเดือนและปี (ทั้งหมด) --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ตัวกรองประเภทรายการ (Filter Pills) -->
+        <div class="d-flex gap-1 overflow-x-auto pb-1 mb-2 no-scrollbar">
+          <button class="filter-btn active" onclick="setFilter('ALL', this)">
+            <i class="fa-solid fa-border-all me-1"></i>ทั้งหมด
+          </button>
+          <button class="filter-btn" onclick="setFilter('INTAKE', this)">
+            <i class="fa-solid fa-arrow-down me-1 text-success"></i>รับเข้า (+)
+          </button>
+          <button class="filter-btn" onclick="setFilter('OUTTAKE', this)">
+            <i class="fa-solid fa-arrow-up me-1 text-danger"></i>เบิกจ่าย (-)
+          </button>
+          <button class="filter-btn" onclick="setFilter('DIESEL', this)">
+            <i class="fa-solid fa-oil-can me-1 text-success"></i>ดีเซล
+          </button>
+          <button class="filter-btn" onclick="setFilter('BENZENE', this)">
+            <i class="fa-solid fa-gas-pump me-1 text-warning"></i>เบนซิน
+          </button>
+        </div>
+
+        <!-- ช่องค้นหา -->
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light border-end-0 text-muted"
+            ><i class="fa-solid fa-magnifying-glass"></i
+          ></span>
+          <input
+            type="text"
+            id="searchInput"
+            class="form-control border-start-0 bg-light"
+            placeholder="ค้นหาตามวันที่, ผู้รายงาน, รถ, ทะเบียน..."
+            onkeyup="filterAndRender()"
+          />
+        </div>
+      </div>
+
+      <!-- รายการประวัติ -->
+      <div id="logsContainer">
+        <div class="text-center py-5 text-muted">
+          <div
+            class="spinner-border spinner-border-sm text-success me-2"
+            role="status"
+          ></div>
+          กำลังโหลดข้อมูลคลัง สป.3...
         </div>
       </div>
     </div>
 
-    <!-- Summary Box -->
-    <div class="stock-card p-3 mb-3 bg-white">
-      <div class="row text-center">
-        <div class="col-6 border-end">
-          <div class="text-success small fw-semibold"><i class="fa-solid fa-arrow-down-long me-1"></i> ยอดรับรวมทั้งหมด</div>
-          <div class="fw-bold mt-1 text-dark" id="totalIntakeSummary">0 ลิตร</div>
-        </div>
-        <div class="col-6">
-          <div class="text-danger small fw-semibold"><i class="fa-solid fa-arrow-up-long me-1"></i> ยอดเบิกจ่ายรวม</div>
-          <div class="fw-bold mt-1 text-dark" id="totalOuttakeSummary">0 ลิตร</div>
-        </div>
-      </div>
-    </div>
+    <!-- SweetAlert2 & Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
 
-    <!-- Filter Buttons & Search -->
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <h6 class="fw-bold m-0 text-secondary"><i class="fa-solid fa-list-check me-1"></i> ประวัติรายการ สป.3</h6>
-      <span class="badge bg-secondary" id="itemCountBadge">0 รายการ</span>
-    </div>
+    <script>
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbwVGZUdZA5gA_bYPKiPBGQVcLZEVCzeO3e_OL4FmaHLRtkxlxZVswgAlKf4kYSTiJAUTw/exec";
 
-    <!-- Dropdown กรองเดือน พ.ศ. -->
-    <div class="mb-2">
-      <select id="monthFilterSelect" class="form-select form-select-sm shadow-sm" onchange="filterAndRender()">
-        <option value="ALL">-- ทุกเดือนและปี (ทั้งหมด) --</option>
-      </select>
-    </div>
+      let rawDataStore = [];
+      let globalDieselStock = 0;
+      let globalBenzeneStock = 0;
+      let currentFilter = "ALL";
+      let currentLimit = 10;
+      const ITEMS_PER_PAGE = 10;
+      let scrollObserver = null;
 
-    <!-- ตัวกรองประเภทรายการ (Filters) -->
-    <div class="d-flex gap-1 overflow-x-auto pb-2 mb-2 no-scrollbar">
-      <button class="filter-btn active" onclick="setFilter('ALL', this)">ทั้งหมด</button>
-      <button class="filter-btn" onclick="setFilter('INTAKE', this)">รับเข้า (+)</button>
-      <button class="filter-btn" onclick="setFilter('OUTTAKE', this)">เบิกจ่าย (-)</button>
-      <button class="filter-btn" onclick="setFilter('DIESEL', this)">ดีเซล</button>
-      <button class="filter-btn" onclick="setFilter('BENZENE', this)">เบนซิน</button>
-    </div>
-
-    <!-- ช่องค้นหา -->
-    <div class="input-group input-group-sm mb-3">
-      <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-      <input type="text" id="searchInput" class="form-control border-start-0" placeholder="ค้นหาตามวันที่, ผู้รายงาน, รถ, ทะเบียน..." onkeyup="filterAndRender()">
-    </div>
-
-    <div id="logsContainer">
-      <div class="text-center py-5 text-muted">
-        <div class="spinner-border spinner-border-sm text-success me-2" role="status"></div>
-        กำลังโหลดข้อมูลคลัง สป.3...
-      </div>
-    </div>
-
-  </div>
-
-  <!-- SweetAlert2 & Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
-
-  <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwVGZUdZA5gA_bYPKiPBGQVcLZEVCzeO3e_OL4FmaHLRtkxlxZVswgAlKf4kYSTiJAUTw/exec';
-
-    let rawDataStore = [];
-    let currentFilter = 'ALL';
-    let currentLimit = 10;
-    const ITEMS_PER_PAGE = 10;
-    let scrollObserver = null;
-
-    document.addEventListener('DOMContentLoaded', function() {
-      loadData();
-    });
-
-    /**
-     * ดึงข้อมูลผ่าน Fetch API จาก Google Apps Script
-     */
-    async function loadData() {
-      Swal.fire({
-        title: 'กำลังอัปเดตข้อมูล...',
-        text: 'กรุณารอสักครู่',
-        allowOutsideClick: false,
-        didOpen: () => { Swal.showLoading(); }
+      document.addEventListener("DOMContentLoaded", function () {
+        loadData();
       });
 
-      try {
-        const response = await fetch(API_URL);
-        const result = await response.json();
-        Swal.close();
-        onDataLoaded(result);
-      } catch (err) {
-        Swal.close();
-        onError(err);
+      async function loadData() {
+        Swal.fire({
+          title: "กำลังอัปเดตข้อมูล...",
+          text: "กรุณารอสักครู่",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+          const response = await fetch(API_URL);
+          const result = await response.json();
+          Swal.close();
+          onDataLoaded(result);
+        } catch (err) {
+          Swal.close();
+          onError(err);
+        }
       }
-    }
 
-    function onDataLoaded(response) {
-      if (!response) {
-        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถดึงข้อมูลได้ (Response is null)', 'error');
-        return;
+      function onDataLoaded(response) {
+        if (!response) {
+          Swal.fire(
+            "เกิดข้อผิดพลาด",
+            "ไม่สามารถดึงข้อมูลได้ (Response is null)",
+            "error",
+          );
+          return;
+        }
+
+        if (response.status === "success") {
+          globalDieselStock = response.stock.diesel;
+          globalBenzeneStock = response.stock.benzene;
+
+          rawDataStore = response.logs;
+
+          populateMonthFilter(rawDataStore);
+
+          currentLimit = ITEMS_PER_PAGE;
+          filterAndRender();
+        } else {
+          Swal.fire("เกิดข้อผิดพลาด", response.message, "error");
+        }
       }
 
-      if (response.status === 'success') {
-        document.getElementById('dieselStock').innerText = response.stock.diesel.toLocaleString();
-        document.getElementById('benzeneStock').innerText = response.stock.benzene.toLocaleString();
-
-        const totalIn = response.summary.totalIntakeDiesel + response.summary.totalIntakeBenzene;
-        const totalOut = response.summary.totalOuttakeDiesel + response.summary.totalOuttakeBenzene;
-
-        document.getElementById('totalIntakeSummary').innerText = totalIn.toLocaleString() + ' ลิตร';
-        document.getElementById('totalOuttakeSummary').innerText = totalOut.toLocaleString() + ' ลิตร';
-
-        rawDataStore = response.logs;
-        
-        // สร้างตัวเลือกใน Dropdown เดือน/ปี พ.ศ. ตามข้อมูลที่มี
-        populateMonthFilter(rawDataStore);
-
-        currentLimit = ITEMS_PER_PAGE;
-        filterAndRender();
-      } else {
-        Swal.fire('เกิดข้อผิดพลาด', response.message, 'error');
+      function onError(err) {
+        Swal.fire("ข้อผิดพลาดระบบ", err.message || err, "error");
       }
-    }
 
-    function onError(err) {
-      Swal.fire('ข้อผิดพลาดระบบ', err.message || err, 'error');
-    }
+      function populateMonthFilter(logs) {
+        const select = document.getElementById("monthFilterSelect");
+        const currentValue = select.value;
+        const thaiMonths = [
+          "ม.ค.",
+          "ก.พ.",
+          "มี.ค.",
+          "เม.ย.",
+          "พ.ค.",
+          "มิ.ย.",
+          "ก.ค.",
+          "ส.ค.",
+          "ก.ย.",
+          "ต.ค.",
+          "พ.ย.",
+          "ธ.ค.",
+        ];
 
-    /**
-     * สร้างรายการ Dropdown เดือน พ.ศ. จากข้อมูลในระบบ
-     */
-    function populateMonthFilter(logs) {
-      const select = document.getElementById('monthFilterSelect');
-      const currentValue = select.value;
-      const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-      
-      const monthYearSet = new Set();
-      logs.forEach(item => {
-        if (!item.rawTimestamp) return;
-        const d = new Date(item.rawTimestamp);
-        if (isNaN(d.getTime())) return;
-        const month = d.getMonth(); // 0-11
-        const yearBE = d.getFullYear() + 543; // แปลงปี ค.ศ. เป็น พ.ศ.
-        const key = `${month}-${yearBE}`;
-        const label = `${thaiMonths[month]} ${yearBE}`;
-        monthYearSet.add(JSON.stringify({ key, label, month, yearBE }));
-      });
-
-      // เรียงลำดับจากเดือน/ปี ล่าสุดไปเก่าสุด
-      const sortedMonths = Array.from(monthYearSet).map(s => JSON.parse(s)).sort((a, b) => {
-        if (a.yearBE !== b.yearBE) return b.yearBE - a.yearBE;
-        return b.month - a.month;
-      });
-
-      let html = '<option value="ALL">-- ทุกเดือนและปี (ทั้งหมด) --</option>';
-      sortedMonths.forEach(m => {
-        html += `<option value="${m.key}">${m.label}</option>`;
-      });
-      
-      select.innerHTML = html;
-
-      // คืนค่าที่เคยเลือกไว้เดิม (ถ้ายังมีอยู่)
-      if (Array.from(select.options).some(opt => opt.value === currentValue)) {
-        select.value = currentValue;
-      } else {
-        select.value = 'ALL';
-      }
-    }
-
-    function setFilter(filterType, btn) {
-      currentFilter = filterType;
-      currentLimit = ITEMS_PER_PAGE;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      filterAndRender();
-    }
-
-    function filterAndRender() {
-      const searchKeyword = document.getElementById('searchInput').value.toLowerCase().trim();
-      const selectedMonthKey = document.getElementById('monthFilterSelect').value;
-
-      let filtered = rawDataStore.filter(item => {
-        // กรองประเภท
-        if (currentFilter === 'INTAKE' && item.type !== 'INTAKE') return false;
-        if (currentFilter === 'OUTTAKE' && item.type !== 'OUTTAKE') return false;
-        if (currentFilter === 'DIESEL' && !item.itemType.includes('ดีเซล')) return false;
-        if (currentFilter === 'BENZENE' && !item.itemType.includes('เบนซิน')) return false;
-
-        // กรองเดือนและปี พ.ศ.
-        if (selectedMonthKey !== 'ALL') {
-          if (!item.rawTimestamp) return false;
+        const monthYearSet = new Set();
+        logs.forEach((item) => {
+          if (!item.rawTimestamp) return;
           const d = new Date(item.rawTimestamp);
-          if (isNaN(d.getTime())) return false;
-          const itemKey = `${d.getMonth()}-${d.getFullYear() + 543}`;
-          if (itemKey !== selectedMonthKey) return false;
+          if (isNaN(d.getTime())) return;
+          const month = d.getMonth();
+          const yearBE = d.getFullYear() + 543;
+          const key = `${month}-${yearBE}`;
+          const label = `${thaiMonths[month]} ${yearBE}`;
+          monthYearSet.add(JSON.stringify({ key, label, month, yearBE }));
+        });
+
+        const sortedMonths = Array.from(monthYearSet)
+          .map((s) => JSON.parse(s))
+          .sort((a, b) => {
+            if (a.yearBE !== b.yearBE) return b.yearBE - a.yearBE;
+            return b.month - a.month;
+          });
+
+        let html = '<option value="ALL">-- ทุกเดือนและปี (ทั้งหมด) --</option>';
+        sortedMonths.forEach((m) => {
+          html += `<option value="${m.key}">${m.label}</option>`;
+        });
+
+        select.innerHTML = html;
+
+        if (
+          Array.from(select.options).some((opt) => opt.value === currentValue)
+        ) {
+          select.value = currentValue;
+        } else {
+          select.value = "ALL";
         }
+      }
 
-        // กรองคำค้นหา
-        if (searchKeyword !== '') {
-          const searchStr = `${item.date} ${item.reporter} ${item.itemType} ${item.subDetail} ${item.origin}`.toLowerCase();
-          return searchStr.includes(searchKeyword);
-        }
-        return true;
-      });
+      function setFilter(filterType, btn) {
+        currentFilter = filterType;
+        currentLimit = ITEMS_PER_PAGE;
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        filterAndRender();
+      }
 
-      document.getElementById('itemCountBadge').innerText = filtered.length + ' รายการ';
-      const slicedLogs = filtered.slice(0, currentLimit);
-      renderBankList(slicedLogs, filtered.length);
-    }
+      function filterAndRender() {
+        const searchKeyword = document
+          .getElementById("searchInput")
+          .value.toLowerCase()
+          .trim();
+        const selectedMonthKey =
+          document.getElementById("monthFilterSelect").value;
 
-    function renderBankList(logs, totalFilteredCount) {
-      const container = document.getElementById('logsContainer');
+        let filtered = rawDataStore.filter((item) => {
+          if (currentFilter === "INTAKE" && item.type !== "INTAKE")
+            return false;
+          if (currentFilter === "OUTTAKE" && item.type !== "OUTTAKE")
+            return false;
+          if (currentFilter === "DIESEL" && !item.itemType.includes("ดีเซล"))
+            return false;
+          if (currentFilter === "BENZENE" && !item.itemType.includes("เบนซิน"))
+            return false;
 
-      if (logs.length === 0) {
-        container.innerHTML = `
+          if (selectedMonthKey !== "ALL") {
+            if (!item.rawTimestamp) return false;
+            const d = new Date(item.rawTimestamp);
+            if (isNaN(d.getTime())) return false;
+            const itemKey = `${d.getMonth()}-${d.getFullYear() + 543}`;
+            if (itemKey !== selectedMonthKey) return false;
+          }
+
+          if (searchKeyword !== "") {
+            const searchStr =
+              `${item.date} ${item.reporter} ${item.itemType} ${item.subDetail} ${item.origin}`.toLowerCase();
+            return searchStr.includes(searchKeyword);
+          }
+          return true;
+        });
+
+        // คำนวณยอดรับและยอดเบิกตามข้อมูลที่ผ่าน Filter
+        let dieselIntake = 0,
+          dieselOuttake = 0;
+        let benzeneIntake = 0,
+          benzeneOuttake = 0;
+        let totalFilteredIntake = 0;
+        let totalFilteredOuttake = 0;
+
+        filtered.forEach((item) => {
+          const amt = isNaN(item.amount) ? 0 : item.amount;
+          if (item.type === "INTAKE") totalFilteredIntake += amt;
+          if (item.type === "OUTTAKE") totalFilteredOuttake += amt;
+
+          if (item.itemType.includes("ดีเซล")) {
+            if (item.type === "INTAKE") dieselIntake += amt;
+            if (item.type === "OUTTAKE") dieselOuttake += amt;
+          } else if (item.itemType.includes("เบนซิน")) {
+            if (item.type === "INTAKE") benzeneIntake += amt;
+            if (item.type === "OUTTAKE") benzeneOuttake += amt;
+          }
+        });
+
+        // อัปเดตการ์ด 3 คอลัมน์ (ดีเซล / เบนซิน)
+        document.getElementById("filteredDieselStock").innerText =
+          globalDieselStock.toLocaleString();
+        document.getElementById("filteredDieselIntake").innerText =
+          dieselIntake.toLocaleString();
+        document.getElementById("filteredDieselOuttake").innerText =
+          dieselOuttake.toLocaleString();
+
+        document.getElementById("filteredBenzeneStock").innerText =
+          globalBenzeneStock.toLocaleString();
+        document.getElementById("filteredBenzeneIntake").innerText =
+          benzeneIntake.toLocaleString();
+        document.getElementById("filteredBenzeneOuttake").innerText =
+          benzeneOuttake.toLocaleString();
+
+        // อัปเดต Summary Card ใต้การ์ดเบนซิน (เปลี่ยนตาม Filter)
+        document.getElementById("filteredTotalIntakeSummary").innerText =
+          totalFilteredIntake.toLocaleString() + " ลิตร";
+        document.getElementById("filteredTotalOuttakeSummary").innerText =
+          totalFilteredOuttake.toLocaleString() + " ลิตร";
+
+        document.getElementById("itemCountBadge").innerText =
+          filtered.length + " รายการ";
+        const slicedLogs = filtered.slice(0, currentLimit);
+        renderBankList(slicedLogs, filtered.length);
+      }
+
+      function renderBankList(logs, totalFilteredCount) {
+        const container = document.getElementById("logsContainer");
+
+        if (logs.length === 0) {
+          container.innerHTML = `
           <div class="text-center py-5 bg-white rounded-4 shadow-sm">
             <i class="fa-solid fa-inbox text-muted fs-1 mb-2"></i>
             <p class="text-muted m-0">ไม่พบรายการข้อมูลตามเงื่อนไข</p>
           </div>
         `;
-        return;
-      }
-
-      let html = '<div class="ktb-list-container">';
-      let lastDate = '';
-
-      logs.forEach((item) => {
-        const isIntake = item.type === 'INTAKE';
-        const sign = isIntake ? '+' : '-';
-        const amountClass = isIntake ? 'intake' : 'outtake';
-
-        if (item.date !== lastDate) {
-          html += `<div class="date-badge"><i class="fa-regular fa-calendar me-1"></i> ${item.date}</div>`;
-          lastDate = item.date;
+          return;
         }
 
-        html += `
+        let html = '<div class="ktb-list-container">';
+        let lastDate = "";
+
+        logs.forEach((item) => {
+          const isIntake = item.type === "INTAKE";
+          const sign = isIntake ? "+" : "-";
+          const amountClass = isIntake ? "intake" : "outtake";
+
+          if (item.date !== lastDate) {
+            html += `<div class="date-badge"><i class="fa-regular fa-calendar me-1"></i> ${item.date}</div>`;
+            lastDate = item.date;
+          }
+
+          html += `
           <div class="ktb-item" onclick="showDetailModal('${item.id}')">
             <div class="flex-grow-1 me-2 overflow-hidden">
               <div class="d-flex align-items-center gap-1">
                 <span class="fw-bold text-dark text-truncate">${item.title}</span>
-                <span class="badge ${item.itemType.includes('ดีเซล') ? 'bg-success' : 'bg-warning text-dark'}" style="font-size:0.68rem;">${item.itemType}</span>
+                <span class="badge ${item.itemType.includes("ดีเซล") ? "bg-success" : "bg-warning text-dark"}" style="font-size:0.68rem;">${item.itemType}</span>
               </div>
               <div class="text-muted small text-truncate" style="font-size:0.8rem;">
                 ${item.subDetail}
@@ -434,73 +695,75 @@
             </div>
           </div>
         `;
-      });
+        });
 
-      html += '</div>';
+        html += "</div>";
 
-      if (logs.length < totalFilteredCount) {
-        html += `
+        if (logs.length < totalFilteredCount) {
+          html += `
           <div id="scrollSentinel" class="text-center py-3 text-muted small">
             <div class="spinner-border spinner-border-sm text-success me-1" role="status"></div>
             กำลังโหลดรายการเพิ่มเติม...
           </div>
         `;
-      } else {
-        html += `
+        } else {
+          html += `
           <div class="text-center py-3 text-muted small">
             — แสดงรายการทั้งหมดแล้ว (${totalFilteredCount} รายการ) —
           </div>
         `;
+        }
+
+        container.innerHTML = html;
+        setupInfiniteScroll(totalFilteredCount);
       }
 
-      container.innerHTML = html;
-      setupInfiniteScroll(totalFilteredCount);
-    }
+      function setupInfiniteScroll(totalCount) {
+        if (scrollObserver) scrollObserver.disconnect();
+        const sentinel = document.getElementById("scrollSentinel");
+        if (!sentinel) return;
 
-    function setupInfiniteScroll(totalCount) {
-      if (scrollObserver) scrollObserver.disconnect();
-      const sentinel = document.getElementById('scrollSentinel');
-      if (!sentinel) return;
+        scrollObserver = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) {
+              if (currentLimit < totalCount) {
+                currentLimit += ITEMS_PER_PAGE;
+                filterAndRender();
+              }
+            }
+          },
+          { threshold: 0.1 },
+        );
 
-      scrollObserver = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          if (currentLimit < totalCount) {
-            currentLimit += ITEMS_PER_PAGE;
-            filterAndRender();
-          }
-        }
-      }, { threshold: 0.1 });
+        scrollObserver.observe(sentinel);
+      }
 
-      scrollObserver.observe(sentinel);
-    }
+      function showDetailModal(itemId) {
+        const item = rawDataStore.find((x) => x.id === itemId);
+        if (!item) return;
 
-    function showDetailModal(itemId) {
-      const item = rawDataStore.find(x => x.id === itemId);
-      if (!item) return;
+        const isIntake = item.type === "INTAKE";
+        const typeBadge = isIntake
+          ? '<span class="badge bg-success">รับเข้า สป.3 (+)</span>'
+          : '<span class="badge bg-danger">เบิกจ่าย สป.3 (-)</span>';
 
-      const isIntake = item.type === 'INTAKE';
-      const typeBadge = isIntake 
-        ? '<span class="badge bg-success">รับเข้า สป.3 (+)</span>' 
-        : '<span class="badge bg-danger">เบิกจ่าย สป.3 (-)</span>';
-
-      Swal.fire({
-        title: item.title,
-        html: `
+        Swal.fire({
+          title: item.title,
+          html: `
           <div class="text-start fs-6 my-2">
             <div class="text-center mb-3">${typeBadge}</div>
             <p class="mb-1"><strong>วันที่:</strong> ${item.date} (${item.time} น.)</p>
             <p class="mb-1"><strong>ชนิดน้ำมัน:</strong> ${item.itemType}</p>
-            <p class="mb-1"><strong>จำนวน:</strong> <span class="fw-bold fs-5 ${isIntake ? 'text-success':'text-danger'}">${item.amount.toLocaleString()} ลิตร</span></p>
+            <p class="mb-1"><strong>จำนวน:</strong> <span class="fw-bold fs-5 ${isIntake ? "text-success" : "text-danger"}">${item.amount.toLocaleString()} ลิตร</span></p>
             <p class="mb-1"><strong>ผู้ดำเนินการ:</strong> ${item.reporter}</p>
-            ${isIntake ? `<p class="mb-1"><strong>รับมาจาก:</strong> ${item.origin}</p>` : ''}
+            ${isIntake ? `<p class="mb-1"><strong>รับมาจาก:</strong> ${item.origin}</p>` : ""}
             <p class="mb-1"><strong>รายละเอียดเพิ่มเติม:</strong> ${item.subDetail}</p>
           </div>
         `,
-        confirmButtonText: 'ปิดหน้าต่าง',
-        confirmButtonColor: '#2D4A22'
-      });
-    }
-  </script>
-</body>
-
+          confirmButtonText: "ปิดหน้าต่าง",
+          confirmButtonColor: "#2D4A22",
+        });
+      }
+    </script>
+  </body>
 </html>
